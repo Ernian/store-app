@@ -1,85 +1,96 @@
 import React, { useState } from 'react';
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import { Menu, Badge, Input } from 'antd';
+import {
+    AppstoreOutlined,
+    MenuOutlined,
+    AndroidOutlined,
+    SketchOutlined,
+    ManOutlined,
+    WomanOutlined,
+    ShoppingCartOutlined,
+    BarsOutlined,
+} from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Menu, Col, Row } from 'antd';
+import './header.css'
+
+const { Search } = Input
+const onSearch = (value: string) => console.log(value);
 
 const items: MenuProps['items'] = [
     {
-        label: 'Navigation One',
-        key: 'mail',
-        icon: <MailOutlined />,
-    },
-    {
-        label: 'Navigation Two',
-        key: 'app',
+        label: <a href="#store">Store</a>,
+        key: 'store',
         icon: <AppstoreOutlined />,
-        disabled: true,
     },
     {
-        label: 'Navigation Three - Submenu',
-        key: 'SubMenu',
-        icon: <SettingOutlined />,
+        label: 'Categories',
+        key: 'categories',
+        icon: <MenuOutlined />,
         children: [
             {
-                type: 'group',
-                label: 'Item 1',
-                children: [
-                    {
-                        label: 'Option 1',
-                        key: 'setting:1',
-                    },
-                    {
-                        label: 'Option 2',
-                        key: 'setting:2',
-                    },
-                ],
+                label: <a href="#all">All products</a>,
+                key: 'all',
+                icon: <BarsOutlined />
             },
             {
-                type: 'group',
-                label: 'Item 2',
-                children: [
-                    {
-                        label: 'Option 3',
-                        key: 'setting:3',
-                    },
-                    {
-                        label: 'Option 4',
-                        key: 'setting:4',
-                    },
-                ],
+                label: <a href="#electronics">Electronics</a>,
+                key: 'electronics',
+                icon: <AndroidOutlined />
+            },
+            {
+                label: <a href="#jewelery">Jewelery</a>,
+                key: 'jewelery',
+                icon: <SketchOutlined />
+            },
+            {
+                label: <a href="#men">Men's clothing</a>,
+                key: 'men clothing',
+                icon: <ManOutlined />
+            },
+            {
+                label: <a href="#women">Women's clothing</a>,
+                key: 'women clothing',
+                icon: <WomanOutlined />
             },
         ],
     },
     {
         label: (
-            <a href="https://ant.design" target="_blank" rel="noopener noreferrer">
-                Navigation Four - Link
-            </a>
+            <Search
+                placeholder="input search text"
+                allowClear
+                onSearch={onSearch}
+                id='search-input'
+            />
         ),
-        key: 'alipay',
+        key: 'search',
     },
+    {
+        label: (
+            <Badge count={42} status='success' offset={[8, 40]}>
+                <a href="/cart">
+                    <ShoppingCartOutlined style={{ fontSize: 22 }} />
+                </a>
+            </Badge>
+        ),
+        key: 'cart',
+        style: { marginLeft: 'auto', marginRight: 12 }
+    }
 ];
 
 const Header: React.FC = (): JSX.Element => {
-    const [current, setCurrent] = useState('mail');
-
+    const [current, setCurrent] = useState('store');
     const onClick: MenuProps['onClick'] = e => {
-        console.log('click ', e);
         setCurrent(e.key);
     };
 
     return (
-        <Row>
-            <Col span={20} offset={2}>
-                <Menu
-                    onClick={onClick}
-                    selectedKeys={[current]}
-                    mode="horizontal"
-                    items={items}
-                />
-            </Col>
-        </Row>
-
+        <Menu
+            onClick={onClick}
+            selectedKeys={[current]}
+            mode="horizontal"
+            items={items}
+        />
     )
 }
 
