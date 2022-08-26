@@ -12,13 +12,14 @@ import {
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import './header.css'
+import { Link } from 'react-router-dom';
 
 const { Search } = Input
 const onSearch = (value: string) => console.log(value);
 
 const items: MenuProps['items'] = [
     {
-        label: <a href="#store">Store</a>,
+        label: <Link to='/'>Store</Link>,
         key: 'store',
         icon: <AppstoreOutlined />,
     },
@@ -28,12 +29,12 @@ const items: MenuProps['items'] = [
         icon: <MenuOutlined />,
         children: [
             {
-                label: <a href="#all">All products</a>,
+                label: <Link to='/products'>All products</Link>,
                 key: 'all',
                 icon: <BarsOutlined />
             },
             {
-                label: <a href="#electronics">Electronics</a>,
+                label: <Link to='/product'>Electronics</Link>,
                 key: 'electronics',
                 icon: <AndroidOutlined />
             },
@@ -68,9 +69,9 @@ const items: MenuProps['items'] = [
     {
         label: (
             <Badge count={42} status='success' offset={[8, 40]}>
-                <a href="/cart">
+                <Link to="/cart">
                     <ShoppingCartOutlined style={{ fontSize: 22 }} />
-                </a>
+                </Link>
             </Badge>
         ),
         key: 'cart',
