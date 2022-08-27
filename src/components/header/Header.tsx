@@ -29,27 +29,27 @@ const items: MenuProps['items'] = [
         icon: <MenuOutlined />,
         children: [
             {
-                label: <Link to='/products'>All products</Link>,
+                label: <Link to='/products/all'>All products</Link>,
                 key: 'all',
                 icon: <BarsOutlined />
             },
             {
-                label: <Link to='/product'>Electronics</Link>,
+                label: <Link to='/products/electronics'>Electronics</Link>,
                 key: 'electronics',
                 icon: <AndroidOutlined />
             },
             {
-                label: <a href="#jewelery">Jewelery</a>,
+                label: <Link to='/products/jewelery'>Jewelery</Link>,
                 key: 'jewelery',
                 icon: <SketchOutlined />
             },
             {
-                label: <a href="#men">Men's clothing</a>,
+                label: <Link to='/products/men'>Men's clothing</Link>,
                 key: 'men clothing',
                 icon: <ManOutlined />
             },
             {
-                label: <a href="#women">Women's clothing</a>,
+                label: <Link to='/products/women'>Women's clothing</Link>,
                 key: 'women clothing',
                 icon: <WomanOutlined />
             },

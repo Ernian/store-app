@@ -11,13 +11,13 @@
     width: 200px;
 }
 
-@media (max-width: 608px) {
+@media (max-width: 810px) {
     #search-input {
         width: 100px;
     }
 }
 
-@media (max-width: 525px) {
+@media (max-width: 590px) {
     #root>section>section>header>div>div.ant-affix>div>div>ul>li:nth-child(3) {
         display: none;
     }

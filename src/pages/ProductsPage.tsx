@@ -1,5 +1,6 @@
 import React from 'react'
 import { Col, Row } from 'antd';
+import { useParams } from 'react-router-dom';
 import CardSkeleton from '../components/cardSkeleton/CardSkeleton';
 
 const sizes = {
@@ -13,6 +14,9 @@ const sizes = {
 
 const ProductsPage: React.FC = (): JSX.Element => {
     const [loading, setLoading] = React.useState(true)
+    const category = useParams()
+    console.log(category);
+
 
     // 'https://fakestoreapi.com/products/category/men\'s clothing'
     // 'https://fakestoreapi.com/products/category/women\'s clothing'
