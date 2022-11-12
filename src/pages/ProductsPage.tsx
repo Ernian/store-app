@@ -1,66 +1,76 @@
-import React from 'react'
-import { Col, Row } from 'antd';
-import { useParams } from 'react-router-dom';
-import CardSkeleton from '../components/cardSkeleton/CardSkeleton';
+import React, { useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import useStoreRequest from '../hooks/useStoreRequest'
+import { useAppSelector, useAppDispatch } from '../hooks/hooks'
+import { selectCategory } from '../store/productSlice'
+import { Row } from 'antd'
+import CardsSkeleton from '../components/cardsSkeleton/CardsSkeleton'
+import ProductCard from '../components/productCard/ProductCard'
+import { ProductsCategories } from '../types'
 
-const sizes = {
-    xs: 22,
-    sm: 20,
-    md: 12,
-    lg: 8,
-    xl: 6,
-    xxl: 6,
-}
+const ProductsPage: React.FC = () => {
+    const { category } = useParams()
+    const request = useStoreRequest()
+    const dispatch = useAppDispatch()
 
-const ProductsPage: React.FC = (): JSX.Element => {
-    const [loading, setLoading] = React.useState(true)
-    const category = useParams()
-    console.log(category);
+    const {
+        loading,
+        error,
+        products,
+        selectedCategory
+    } = useAppSelector(state => state.products)
 
+    useEffect(() => {
+        if (request.checkCategory(category)) {
+            dispatch(selectCategory(category))
+            request.getProducts(category)
+        }
+    }, [category])
 
-    // 'https://fakestoreapi.com/products/category/men\'s clothing'
-    // 'https://fakestoreapi.com/products/category/women\'s clothing'
+    const visibleProducts = products.filter(({ category }) => {
+        if (selectedCategory === ProductsCategories.ALL) {
+            return true
+        }
+        if (selectedCategory === ProductsCategories.MEN_ALIAS) {
+            return category === ProductsCategories.MEN
+        }
+        if (selectedCategory === ProductsCategories.WOMEN_ALIAS) {
+            return category === ProductsCategories.WOMEN
+        }
+        return category === selectedCategory
+    })
+
+    const productCards = visibleProducts.map(product => (
+        <ProductCard
+            key={product.id}
+            {...product}
+        />
+    ))
 
     return (
         <Row
-            gutter={[
-                { md: 16, lg: 16, xl: 16, xxl: 24 },
-                { xs: 24, sm: 24, md: 16, lg: 16, xl: 16, xxl: 24 }
-            ]}
+            gutter={
+                [
+                    { md: 16, lg: 16, xl: 16, xxl: 24 },
+                    { xs: 24, sm: 24, md: 16, lg: 16, xl: 16, xxl: 24 }
+                ]}
             justify='center'
         >
-            <Col
-                xs={sizes.xs}
-                sm={sizes.sm}
-                md={sizes.md}
-                lg={sizes.lg}
-                xl={sizes.xl}
-                xxl={sizes.xxl}
-            >
-                <CardSkeleton />
-            </Col>
-            <Col xs={sizes.xs} sm={sizes.sm} md={sizes.md} lg={sizes.lg} xl={sizes.xl} xxl={sizes.xxl}>
-                <CardSkeleton />
-            </Col>
-            <Col xs={sizes.xs} sm={sizes.sm} md={sizes.md} lg={sizes.lg} xl={sizes.xl} xxl={sizes.xxl}>
-                <CardSkeleton />
-            </Col>
-            <Col xs={sizes.xs} sm={sizes.sm} md={sizes.md} lg={sizes.lg} xl={sizes.xl} xxl={sizes.xxl}>
-                <CardSkeleton />
-            </Col>
-            <Col xs={sizes.xs} sm={sizes.sm} md={sizes.md} lg={sizes.lg} xl={sizes.xl} xxl={sizes.xxl}>
-                <CardSkeleton />
-            </Col>
-            <Col xs={sizes.xs} sm={sizes.sm} md={sizes.md} lg={sizes.lg} xl={sizes.xl} xxl={sizes.xxl}>
-                <CardSkeleton />
-            </Col>
-            <Col xs={sizes.xs} sm={sizes.sm} md={sizes.md} lg={sizes.lg} xl={sizes.xl} xxl={sizes.xxl}>
-                <CardSkeleton />
-            </Col>
-            <Col xs={sizes.xs} sm={sizes.sm} md={sizes.md} lg={sizes.lg} xl={sizes.xl} xxl={sizes.xxl}>
-                <CardSkeleton />
-            </Col>
-        </Row>
+            {(
+                loading === 'loading'
+                || visibleProducts.length === 0
+            )
+                && <CardsSkeleton />
+            }
+            {(
+
+                loading === 'idle'
+                && visibleProducts.length > 0
+                && !error
+            )
+                && productCards
+            }
+        </Row >
     )
 }
 

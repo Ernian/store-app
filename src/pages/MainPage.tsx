@@ -14,7 +14,7 @@ import clothes1 from '../assets/images/clark-street-mercantile-P3pI6xzovu0-unspl
 import clothes2 from '../assets/images/clark-street-mercantile-qnKhZJPKFD8-unsplash.jpg';
 import jewelery from '../assets/images/bulbul-ahmed-9OLf9NNcTio-unsplash.jpg'
 
-const MainPage: React.FC = (): JSX.Element => {
+const MainPage: React.FC = () => {
     const { Panel } = Collapse
     const [form] = Form.useForm()
 
@@ -27,7 +27,6 @@ const MainPage: React.FC = (): JSX.Element => {
         padding: 20,
         maxWidth: 700,
         boxSizing: 'border-box',
-        border: '1px solid black',
     }
 
     return (

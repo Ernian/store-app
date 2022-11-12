@@ -79,11 +79,9 @@ const items: MenuProps['items'] = [
     }
 ];
 
-const Header: React.FC = (): JSX.Element => {
-    const [current, setCurrent] = useState('store');
-    const onClick: MenuProps['onClick'] = e => {
-        setCurrent(e.key);
-    };
+const Header: React.FC = () => {
+    const [current, setCurrent] = useState('store')
+    const onClick: MenuProps['onClick'] = event => setCurrent(event.key)
 
     return (
         <Menu

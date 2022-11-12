@@ -5,7 +5,7 @@ import Header from '../header/Header';
 import AdminPanel from '../adminPanel/AdminPanel';
 import BreadCrumb from '../breadCrumb/BreadCrumb';
 
-const AppLayout: React.FC = (): JSX.Element => {
+const AppLayout: React.FC = () => {
     const [isAdmin, setIsAdmin] = React.useState(false)
     const date = new Date
 
@@ -14,7 +14,7 @@ const AppLayout: React.FC = (): JSX.Element => {
             {isAdmin && <AdminPanel />}
             <Layout className="site-layout">
                 <Layout.Header className="site-layout-background header" style={{ padding: 0 }} >
-                    <Affix offsetTop={1}>
+                    <Affix>
                         <Row>
                             <Col
                                 xs={24}

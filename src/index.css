@@ -24,9 +24,15 @@ code {
     min-width: 200px;
 }
 
+.product-price {
+    margin: 0;
+    color: green;
+    font-size: 18px;
+    font-weight: bold;
+}
+
 .ant-image {
     display: block;
-
 }
 
 .ant-layout-content.content {

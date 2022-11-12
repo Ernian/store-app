@@ -1,5 +1,11 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { IProductsInitialState, IProductsPayload, ProductsCategories } from '../types';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import {
+    IProductsInitialState,
+    IProductsPayload,
+    IProductPayload,
+    ProductsCategories
+} from '../types'
+import { baseUrl } from './../consts'
 
 const initialState: IProductsInitialState = {
     products: [],
@@ -9,22 +15,42 @@ const initialState: IProductsInitialState = {
     error: null
 }
 
-export const fetchProducts = createAsyncThunk<IProductsPayload, { url: string, category: ProductsCategories }, { rejectValue: string }>(
-    'products/fetchProducts',
-    async function ({ url, category }, { rejectWithValue }) {
-        const response = await fetch(url)
+export const fetchProducts = createAsyncThunk
+    <IProductsPayload,
+        { url: string, category: ProductsCategories },
+        { rejectValue: string }>
+    (
+        'products/fetchProducts',
+        async ({ url, category }, { rejectWithValue }) => {
+            const response = await fetch(url)
+            if (!response.ok) {
+                return rejectWithValue('Server error')
+            }
+            const products = await response.json()
+            return { products, category }
+        }
+    )
+
+export const fetchProductById = createAsyncThunk<IProductPayload, string, { rejectValue: string }>(
+    'products/fetchProductById',
+    async (id, { rejectWithValue }) => {
+        const response = await fetch(`${baseUrl}/${id}`)
         if (!response.ok) {
             return rejectWithValue('Server error')
         }
-        const products = await response.json()
-        return { products, category }
+        const product = await response.json()
+        return product
     }
 )
 
 const productsSlice = createSlice({
     name: 'products',
     initialState,
-    reducers: {},
+    reducers: {
+        selectCategory(state, action: PayloadAction<ProductsCategories>) {
+            state.selectedCategory = action.payload
+        }
+    },
     extraReducers: builder => {
         builder
             .addCase(fetchProducts.pending, (state) => {
@@ -38,11 +64,10 @@ const productsSlice = createSlice({
                     if (category === 'all') {
                         state.products = products
                         state.downloadedCategories = [
-                            ProductsCategories.ALL,
                             ProductsCategories.ELECTRONICS,
                             ProductsCategories.JEWELERY,
-                            ProductsCategories.MEN,
-                            ProductsCategories.WOMEN
+                            ProductsCategories.MEN_ALIAS,
+                            ProductsCategories.WOMEN_ALIAS
                         ]
                     } else {
                         state.products.push(...products)
@@ -53,9 +78,20 @@ const productsSlice = createSlice({
                     state.error = 'Empty products array'
                 }
             })
-
+            .addCase(fetchProductById.pending, state => {
+                state.loading = 'loading'
+                state.error = null
+            })
+            .addCase(fetchProductById.fulfilled, (state, { payload: { product } }) => {
+                // if (product.id) {
+                console.log(product)
+                // state.products.push(product)
+                state.loading = 'idle'
+                state.error = null
+                // }
+            })
     }
-
 })
 
+export const { selectCategory } = productsSlice.actions
 export default productsSlice.reducer

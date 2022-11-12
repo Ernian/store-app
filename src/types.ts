@@ -2,8 +2,10 @@ export enum ProductsCategories {
     ALL = 'all',
     ELECTRONICS = 'electronics',
     JEWELERY = 'jewelery',
-    MEN = 'men',
-    WOMEN = 'women',
+    MEN = 'men\'s clothing',
+    WOMEN = 'women\'s clothing',
+    MEN_ALIAS = 'men',
+    WOMEN_ALIAS = 'women'
 }
 
 export interface IProductProperties {
@@ -30,4 +32,8 @@ export interface IProductsInitialState {
 export interface IProductsPayload {
     products: IProductProperties[],
     category: ProductsCategories,
+}
+
+export interface IProductPayload {
+    product: IProductProperties
 }

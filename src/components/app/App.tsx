@@ -1,9 +1,9 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { MainPage, ProductsPage, ProductPage, CartPage } from '../../pages';
-import AppLayout from '../appLayout/AppLayout';
+import React from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { MainPage, ProductsPage, ProductPage, CartPage } from '../../pages'
+import AppLayout from '../appLayout/AppLayout'
 
-function App(): JSX.Element {
+const App: React.FC = () => {
     return (
         <BrowserRouter>
             <Routes>
@@ -18,4 +18,4 @@ function App(): JSX.Element {
     )
 }
 
-export default App;
+export default App
