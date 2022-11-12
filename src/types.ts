@@ -18,7 +18,8 @@ export interface IProductProperties {
         rate: number,
         count: number
     },
-    title: string
+    title: string,
+    count?: number,
 }
 
 export interface IProductsInitialState {
@@ -36,4 +37,8 @@ export interface IProductsPayload {
 
 export interface IProductPayload {
     product: IProductProperties
+}
+
+export interface ICartInitialState {
+    cartProducts: IProductProperties[],
 }

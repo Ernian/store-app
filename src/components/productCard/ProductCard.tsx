@@ -1,14 +1,28 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Col, Card, Button, Rate } from 'antd'
-import { sizes } from '../../consts'
 import { ShoppingCartOutlined } from '@ant-design/icons'
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
+import { addProductToCart, incProductCount } from '../../store/cartSlice'
 import { IProductProperties } from '../../types'
-import productSlice from '../../store/productSlice'
+import { sizes } from '../../consts'
 
 const { Meta } = Card;
 
 const ProductCard: React.FC<IProductProperties> = (props: IProductProperties) => {
+
+    const dispatch = useAppDispatch()
+    const { cartProducts } = useAppSelector(state => state.cart)
+
+    function buttonHandler() {
+        const isProductInCart = !!cartProducts.find(product => product.id === props.id)
+        if (!isProductInCart) {
+            dispatch(addProductToCart({ ...props, count: 1 }))
+        } else {
+            dispatch(incProductCount(props.id))
+        }
+    }
+
     return (
         <Col
             xs={sizes.xs}
@@ -55,6 +69,7 @@ const ProductCard: React.FC<IProductProperties> = (props: IProductProperties) =>
                     icon={<ShoppingCartOutlined />}
                     size='large'
                     style={{ margin: '15px auto', fontSize: '18px', display: 'block' }}
+                    onClick={buttonHandler}
                 >
                     Add to cart
                 </Button>

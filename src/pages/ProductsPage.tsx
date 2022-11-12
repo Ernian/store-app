@@ -10,7 +10,7 @@ import { ProductsCategories } from '../types'
 
 const ProductsPage: React.FC = () => {
     const { category } = useParams()
-    const request = useStoreRequest()
+    const { checkCategory, getProducts } = useStoreRequest()
     const dispatch = useAppDispatch()
 
     const {
@@ -21,9 +21,9 @@ const ProductsPage: React.FC = () => {
     } = useAppSelector(state => state.products)
 
     useEffect(() => {
-        if (request.checkCategory(category)) {
+        if (checkCategory(category)) {
             dispatch(selectCategory(category))
-            request.getProducts(category)
+            getProducts(category)
         }
     }, [category])
 

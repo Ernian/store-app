@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom'
 import { ShoppingCartOutlined } from '@ant-design/icons'
 import { useAppDispatch, useAppSelector } from '../hooks/hooks'
 import useStoreRequest from '../hooks/useStoreRequest'
-import { IProductProperties } from '../types';
+import { addProductToCart, incProductCount } from '../store/cartSlice'
+import { IProductProperties } from '../types'
 
 import {
     Col,
@@ -20,15 +21,27 @@ const ProductPage: React.FC = () => {
     const { Text } = Typography
 
     const { id } = useParams()
-    const { products } = useAppSelector(state => state.products)
-    const { getProductById } = useStoreRequest()
     const [product, setProduct] = useState<IProductProperties | null>(null)
+    const { products } = useAppSelector(state => state.products)
+    const { cartProducts } = useAppSelector(state => state.cart)
+    const dispatch = useAppDispatch()
+    const { getProductById } = useStoreRequest()
+
+    function buttonHandler() {
+        if (product) {
+            const isProductInCart = !!cartProducts.find(product => product.id === product.id)
+            if (!isProductInCart) {
+                dispatch(addProductToCart({ ...product, count: 1 }))
+            } else {
+                dispatch(incProductCount(product.id))
+            }
+        }
+    }
 
     function findProduct(productId: string | undefined) {
         if (!productId) return null
         const product = products.find(({ id }) => id === parseInt(productId))
         if (!product) {
-            console.log('findProduct', '!product', product)
             getProductById(productId)
             return
         }
@@ -87,6 +100,7 @@ const ProductPage: React.FC = () => {
                             icon={<ShoppingCartOutlined />}
                             size='large'
                             style={{ marginTop: 20, fontSize: '18px', display: 'block' }}
+                            onClick={buttonHandler}
                         >
                             Add to cart
                         </Button>
