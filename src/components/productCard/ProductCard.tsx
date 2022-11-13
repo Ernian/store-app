@@ -1,7 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Col, Card, Button, Rate } from 'antd'
-import { ShoppingCartOutlined } from '@ant-design/icons'
+import { Col, Card, Button, Rate, notification } from 'antd'
+import { ShoppingCartOutlined, SmileOutlined } from '@ant-design/icons'
+import type { NotificationPlacement } from 'antd/es/notification'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import { addProductToCart, incProductCount } from '../../store/cartSlice'
 import { IProductProperties } from '../../types'
@@ -10,10 +11,10 @@ import { sizes } from '../../consts'
 const { Meta } = Card;
 
 const ProductCard: React.FC<IProductProperties> = (props: IProductProperties) => {
-
     const dispatch = useAppDispatch()
     const { cartProducts } = useAppSelector(state => state.cart)
 
+    const placement: NotificationPlacement = 'bottomRight'
     function buttonHandler() {
         const isProductInCart = !!cartProducts.find(product => product.id === props.id)
         if (!isProductInCart) {
@@ -21,6 +22,12 @@ const ProductCard: React.FC<IProductProperties> = (props: IProductProperties) =>
         } else {
             dispatch(incProductCount(props.id))
         }
+        notification.open({
+            message: `${props.title} added to cart`,
+            description: 'Visit cart page to see all products',
+            icon: <SmileOutlined style={{ color: '#108ee9' }} />,
+            placement
+        })
     }
 
     return (

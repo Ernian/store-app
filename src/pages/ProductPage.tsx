@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { ShoppingCartOutlined } from '@ant-design/icons'
+import { ShoppingCartOutlined, SmileOutlined } from '@ant-design/icons'
+import type { NotificationPlacement } from 'antd/es/notification'
 import { useAppDispatch, useAppSelector } from '../hooks/hooks'
 import useStoreRequest from '../hooks/useStoreRequest'
 import { addProductToCart, incProductCount } from '../store/cartSlice'
@@ -14,6 +15,7 @@ import {
     Button,
     Rate,
     Typography,
+    notification,
 } from 'antd';
 
 const ProductPage: React.FC = () => {
@@ -27,6 +29,7 @@ const ProductPage: React.FC = () => {
     const dispatch = useAppDispatch()
     const { getProductById } = useStoreRequest()
 
+    const placement: NotificationPlacement = 'bottomRight'
     function buttonHandler() {
         if (product) {
             const isProductInCart = !!cartProducts.find(product => product.id === product.id)
@@ -35,6 +38,12 @@ const ProductPage: React.FC = () => {
             } else {
                 dispatch(incProductCount(product.id))
             }
+            notification.open({
+                message: `${product.title} added to cart`,
+                description: 'Visit cart page to see all products',
+                icon: <SmileOutlined style={{ color: '#108ee9' }} />,
+                placement
+            })
         }
     }
 
