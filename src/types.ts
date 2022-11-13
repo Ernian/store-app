@@ -41,4 +41,6 @@ export interface IProductPayload {
 
 export interface ICartInitialState {
     cartProducts: IProductProperties[],
+    totalCartProductsCount: number,
+    totalCartProductsPrice: number,
 }
