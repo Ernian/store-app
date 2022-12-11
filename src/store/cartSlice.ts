@@ -17,6 +17,14 @@ const cartSlice = createSlice({
             ++state.totalCartProductsCount
             state.totalCartProductsPrice = Number((state.totalCartProductsPrice + action.payload.price).toFixed(2))
         },
+        deleteProductFromCart(state, action) {
+            const deleteProduct = state.cartProducts.find(product => product.id === action.payload)
+            if (deleteProduct && deleteProduct?.count) {
+                state.totalCartProductsCount -= deleteProduct?.count
+                state.totalCartProductsPrice -= deleteProduct?.count * deleteProduct.price
+                state.cartProducts = state.cartProducts.filter(({ id }) => id !== action.payload)
+            }
+        },
         incProductCount(state, action) {
             state.cartProducts = state.cartProducts.map(product => {
                 if (product.id === action.payload) {
@@ -28,8 +36,23 @@ const cartSlice = createSlice({
             })
             ++state.totalCartProductsCount
         },
+        decProductCount(state, action) {
+            state.cartProducts = state.cartProducts.map(product => {
+                if (product.id === action.payload && product.count) {
+                    --product.count
+                    state.totalCartProductsPrice = Number((state.totalCartProductsPrice - product.price).toFixed(2))
+                    return product
+                }
+                return product
+            })
+            --state.totalCartProductsCount
+        },
     },
 })
 
-export const { addProductToCart, incProductCount } = cartSlice.actions
+export const {
+    addProductToCart,
+    deleteProductFromCart,
+    incProductCount,
+    decProductCount } = cartSlice.actions
 export default cartSlice.reducer

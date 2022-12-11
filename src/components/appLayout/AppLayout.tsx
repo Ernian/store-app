@@ -5,7 +5,7 @@ import Header from '../header/Header';
 import AdminPanel from '../adminPanel/AdminPanel';
 import BreadCrumb from '../breadCrumb/BreadCrumb';
 
-const AppLayout: React.FC = () => {
+const AppLayout = () => {
     const [isAdmin, setIsAdmin] = React.useState(false)
     const date = new Date
 

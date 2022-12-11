@@ -43,6 +43,18 @@ code {
     background-color: var(--main-background-color);
 }
 
+.cart-icon {
+    display: inline-block;
+    margin-right: 5px;
+    margin-left: 5px;
+    font-size: 18px;
+}
+
+.cart-icon:hover {
+    cursor: pointer;
+    color: #1890ff;
+}
+
 .footer {
     min-height: 100px;
 }
