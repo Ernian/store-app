@@ -43,7 +43,7 @@ const ProductsPage: React.FC = () => {
     const productCards = visibleProducts.map(product => (
         <ProductCard
             key={product.id}
-            {...product}
+            product={product}
         />
     ))
 

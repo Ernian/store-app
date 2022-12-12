@@ -1,22 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { ShoppingCartOutlined, SmileOutlined } from '@ant-design/icons'
-import type { NotificationPlacement } from 'antd/es/notification'
-import { useAppDispatch, useAppSelector } from '../hooks/hooks'
+import { useAppSelector } from '../hooks/hooks'
 import useStoreRequest from '../hooks/useStoreRequest'
-import { addProductToCart, incProductCount } from '../store/cartSlice'
 import { IProductProperties } from '../types'
+import AddToCartButton from '../components/addToCartButton/AddToCartButton'
 
 import {
     Col,
     Row,
     Image,
     Skeleton,
-    Button,
     Rate,
     Typography,
-    notification,
-} from 'antd';
+} from 'antd'
 
 const ProductPage: React.FC = () => {
 
@@ -25,27 +21,7 @@ const ProductPage: React.FC = () => {
     const { id } = useParams()
     const [product, setProduct] = useState<IProductProperties | null>(null)
     const { products } = useAppSelector(state => state.products)
-    const { cartProducts } = useAppSelector(state => state.cart)
-    const dispatch = useAppDispatch()
     const { getProductById } = useStoreRequest()
-
-    const placement: NotificationPlacement = 'bottomRight'
-    function buttonHandler() {
-        if (product) {
-            const isProductInCart = !!cartProducts.find(product => product.id === product.id)
-            if (!isProductInCart) {
-                dispatch(addProductToCart({ ...product, count: 1 }))
-            } else {
-                dispatch(incProductCount(product.id))
-            }
-            notification.open({
-                message: `${product.title} added to cart`,
-                description: 'Visit cart page to see all products',
-                icon: <SmileOutlined style={{ color: '#108ee9' }} />,
-                placement
-            })
-        }
-    }
 
     function findProduct(productId: string | undefined) {
         if (!productId) return null
@@ -104,15 +80,14 @@ const ProductPage: React.FC = () => {
                             disabled
                             defaultValue={product.rating.rate}
                         />
-                        <Button
-                            type='default'
-                            icon={<ShoppingCartOutlined />}
-                            size='large'
-                            style={{ marginTop: 20, fontSize: '18px', display: 'block' }}
-                            onClick={buttonHandler}
-                        >
-                            Add to cart
-                        </Button>
+                        <AddToCartButton
+                            css={{
+                                marginTop: 20,
+                                fontSize: '18px',
+                                display: 'block'
+                            }}
+                            product={product}
+                        />
                     </>
                     : <Skeleton.Input />
                 }
