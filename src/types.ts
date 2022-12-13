@@ -9,7 +9,7 @@ export enum ProductsCategories {
 }
 
 export interface IProductProperties {
-    category: string,
+    category: ProductsCategories,
     description: string,
     id: number,
     image: string,
@@ -23,6 +23,7 @@ export interface IProductProperties {
 }
 
 export interface IProductsInitialState {
+    singleProduct: IProductProperties | null,
     products: IProductProperties[],
     downloadedCategories: ProductsCategories[],
     selectedCategory: ProductsCategories | null,
@@ -33,10 +34,6 @@ export interface IProductsInitialState {
 export interface IProductsPayload {
     products: IProductProperties[],
     category: ProductsCategories,
-}
-
-export interface IProductPayload {
-    product: IProductProperties
 }
 
 export interface ICartInitialState {

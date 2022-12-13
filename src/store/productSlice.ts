@@ -1,13 +1,14 @@
+import { IProductProperties } from './../types';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import {
     IProductsInitialState,
     IProductsPayload,
-    IProductPayload,
     ProductsCategories
 } from '../types'
 import { baseUrl } from './../consts'
 
 const initialState: IProductsInitialState = {
+    singleProduct: null,
     products: [],
     downloadedCategories: [],
     selectedCategory: null,
@@ -31,7 +32,7 @@ export const fetchProducts = createAsyncThunk
         }
     )
 
-export const fetchProductById = createAsyncThunk<IProductPayload, string, { rejectValue: string }>(
+export const fetchProductById = createAsyncThunk<IProductProperties, string, { rejectValue: string }>(
     'products/fetchProductById',
     async (id, { rejectWithValue }) => {
         const response = await fetch(`${baseUrl}/${id}`)
@@ -82,13 +83,13 @@ const productsSlice = createSlice({
                 state.loading = 'loading'
                 state.error = null
             })
-            .addCase(fetchProductById.fulfilled, (state, { payload: { product } }) => {
-                // if (product.id) {
-                console.log(product)
-                // state.products.push(product)
-                state.loading = 'idle'
-                state.error = null
-                // }
+            .addCase(fetchProductById.fulfilled, (state, { payload: product }) => {
+                if (product.id) {
+                    state.singleProduct = product
+                    state.selectedCategory = product.category
+                    state.loading = 'idle'
+                    state.error = null
+                }
             })
     }
 })

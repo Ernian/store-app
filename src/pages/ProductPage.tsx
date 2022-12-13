@@ -20,14 +20,15 @@ const ProductPage: React.FC = () => {
 
     const { id } = useParams()
     const [product, setProduct] = useState<IProductProperties | null>(null)
-    const { products } = useAppSelector(state => state.products)
+    const { products, singleProduct } = useAppSelector(state => state.products)
     const { getProductById } = useStoreRequest()
 
-    function findProduct(productId: string | undefined) {
+    async function findProduct(productId: string | undefined) {
         if (!productId) return null
         const product = products.find(({ id }) => id === parseInt(productId))
         if (!product) {
             getProductById(productId)
+            setProduct(singleProduct)
             return
         }
         setProduct(product)
@@ -35,7 +36,7 @@ const ProductPage: React.FC = () => {
 
     useEffect(() => {
         findProduct(id)
-    }, [id])
+    }, [id, singleProduct])
 
     return (
         <Row justify='center'>
