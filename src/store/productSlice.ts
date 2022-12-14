@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { IProductProperties } from './../types';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import {
@@ -17,31 +18,18 @@ const initialState: IProductsInitialState = {
 }
 
 export const fetchProducts = createAsyncThunk
-    <IProductsPayload,
-        { url: string, category: ProductsCategories },
-        { rejectValue: string }>
+    <IProductsPayload, { url: string, category: ProductsCategories }>
     (
         'products/fetchProducts',
-        async ({ url, category }, { rejectWithValue }) => {
-            const response = await fetch(url)
-            if (!response.ok) {
-                return rejectWithValue('Server error')
-            }
-            const products = await response.json()
+        async ({ url, category }) => {
+            const products = (await axios.get(url)).data
             return { products, category }
         }
     )
 
-export const fetchProductById = createAsyncThunk<IProductProperties, string, { rejectValue: string }>(
+export const fetchProductById = createAsyncThunk<IProductProperties, string>(
     'products/fetchProductById',
-    async (id, { rejectWithValue }) => {
-        const response = await fetch(`${baseUrl}/${id}`)
-        if (!response.ok) {
-            return rejectWithValue('Server error')
-        }
-        const product = await response.json()
-        return product
-    }
+    async (id) => (await axios.get(`${baseUrl}/${id}`)).data
 )
 
 const productsSlice = createSlice({
