@@ -10,7 +10,6 @@ import {
     ManOutlined,
     WomanOutlined,
     ShoppingCartOutlined,
-    BarsOutlined,
 } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
 import './header.css'
@@ -34,11 +33,6 @@ const Header: React.FC = () => {
             key: 'categories',
             icon: <MenuOutlined />,
             children: [
-                {
-                    label: <Link to='/products/all'>All products</Link>,
-                    key: 'all',
-                    icon: <BarsOutlined />
-                },
                 {
                     label: <Link to='/products/electronics'>Electronics</Link>,
                     key: 'electronics',

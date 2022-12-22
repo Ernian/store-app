@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import useStoreRequest from '../hooks/useStoreRequest'
 import { useAppSelector, useAppDispatch } from '../hooks/hooks'
@@ -8,8 +8,10 @@ import CardsSkeleton from '../components/cardsSkeleton/CardsSkeleton'
 import ProductCard from '../components/productCard/ProductCard'
 import { ProductsCategories } from '../types'
 
-const ProductsPage: React.FC = () => {
-    const { category } = useParams()
+
+const ProductsPage = () => {
+    const { category: url } = useParams()
+    const category = url ? url : 'all'
     const { checkCategory, getProducts } = useStoreRequest()
     const dispatch = useAppDispatch()
 
@@ -56,11 +58,11 @@ const ProductsPage: React.FC = () => {
                 ]}
             justify='center'
         >
-            {(
-                loading === 'loading'
-                || visibleProducts.length === 0
-            )
+            {(loading === 'loading' && checkCategory(category))
                 && <CardsSkeleton />
+            }
+            {!checkCategory(category)
+                && <h2>There is no such category</h2>
             }
             {(
 
