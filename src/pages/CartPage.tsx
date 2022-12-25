@@ -92,10 +92,10 @@ const CartPage = () => {
                             padding: 10,
                         }}
                     >
-                        Total price: {totalCartProductsPrice}
+                        Total price: {totalCartProductsPrice.toFixed(2)}
                     </Tag>
                 </>
-            ) : <h2>Cart is empty</h2>}
+            ) : <h2 style={{ marginTop: 10 }}>Cart is empty</h2>}
         </>
     )
 }
