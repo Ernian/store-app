@@ -41,3 +41,21 @@ export interface ICartInitialState {
     totalCartProductsCount: number,
     totalCartProductsPrice: number,
 }
+
+interface IRange {
+    min: number,
+    max: number
+}
+
+export type sortFeild = 'price' | 'rating'
+export type sortOrder = 'asc' | 'desc'
+
+export interface ISearchFilterInitialState {
+    searchText: string,
+    price: IRange,
+    rating: IRange,
+    sort: {
+        feild: sortFeild,
+        order: sortOrder,
+    }
+}

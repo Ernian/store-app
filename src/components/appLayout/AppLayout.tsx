@@ -1,9 +1,8 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom';
-import { Layout, Col, Row, Affix } from 'antd';
-import Header from '../header/Header';
-import AdminPanel from '../adminPanel/AdminPanel';
-import BreadCrumb from '../breadCrumb/BreadCrumb';
+import { Outlet } from 'react-router-dom'
+import { Layout, Col, Row, Affix } from 'antd'
+import Header from '../header/Header'
+import AdminPanel from '../adminPanel/AdminPanel'
 
 const AppLayout = () => {
     const [isAdmin, setIsAdmin] = React.useState(false)
@@ -42,7 +41,6 @@ const AppLayout = () => {
                             xl={{ span: 16, offset: 4 }}
                             xxl={{ span: 14, offset: 5 }}
                         >
-                            <BreadCrumb />
                             <Outlet />
                         </Col>
                     </Row>

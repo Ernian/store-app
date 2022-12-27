@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
-import { useAppSelector } from '../../hooks/hooks'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { useAppSelector, useAppDispatch } from '../../hooks/hooks'
+import { setSearchText, clearSearchText } from '../../store/searchFilterSlice'
 import { Link } from 'react-router-dom'
 import { Menu, Badge, Input } from 'antd'
 import {
@@ -14,17 +16,31 @@ import {
 import type { MenuProps } from 'antd'
 import './header.css'
 
-const { Search } = Input
-const onSearch = (value: string) => console.log(value);
-
 const Header: React.FC = () => {
     const [current, setCurrent] = useState('store')
+    const navigate = useNavigate()
     const onClick: MenuProps['onClick'] = event => setCurrent(event.key)
     const { totalCartProductsCount } = useAppSelector(state => state.cart)
+    const { searchText } = useAppSelector(state => state.searchFilter)
+    const dispatch = useAppDispatch()
+    const { pathname } = useLocation()
+
+    const { Search } = Input
+
+    const onSearch = (searchQuery: string) => {
+        if (!searchQuery || pathname === '/search') return
+        navigate('/search')
+    }
+
+    const onChangeSearchText = (event: React.ChangeEvent<HTMLInputElement>) => {
+        dispatch(setSearchText(event.target.value))
+    }
+
+    const onClearSearchText = () => dispatch(clearSearchText())
 
     const items: MenuProps['items'] = [
         {
-            label: <Link to='/'>Store</Link>,
+            label: <Link to='/' onClick={onClearSearchText}>Store</Link>,
             key: 'store',
             icon: <AppstoreOutlined />,
         },
@@ -34,22 +50,22 @@ const Header: React.FC = () => {
             icon: <MenuOutlined />,
             children: [
                 {
-                    label: <Link to='/products/electronics'>Electronics</Link>,
+                    label: <Link to='/products/electronics' onClick={onClearSearchText}>Electronics</Link>,
                     key: 'electronics',
                     icon: <AndroidOutlined />
                 },
                 {
-                    label: <Link to='/products/jewelery'>Jewelery</Link>,
+                    label: <Link to='/products/jewelery' onClick={onClearSearchText}>Jewelery</Link>,
                     key: 'jewelery',
                     icon: <SketchOutlined />
                 },
                 {
-                    label: <Link to='/products/men'>Men's clothing</Link>,
+                    label: <Link to='/products/men' onClick={onClearSearchText}>Men's clothing</Link>,
                     key: 'men clothing',
                     icon: <ManOutlined />
                 },
                 {
-                    label: <Link to='/products/women'>Women's clothing</Link>,
+                    label: <Link to='/products/women' onClick={onClearSearchText}>Women's clothing</Link>,
                     key: 'women clothing',
                     icon: <WomanOutlined />
                 },
@@ -62,6 +78,8 @@ const Header: React.FC = () => {
                     allowClear
                     onSearch={onSearch}
                     id='search-input'
+                    value={searchText}
+                    onChange={onChangeSearchText}
                 />
             ),
             key: 'search',
@@ -69,7 +87,7 @@ const Header: React.FC = () => {
         {
             label: (
                 <Badge count={totalCartProductsCount} status='success' offset={[8, 40]}>
-                    <Link to="/cart">
+                    <Link to="/cart" onClick={onClearSearchText}>
                         <ShoppingCartOutlined style={{ fontSize: 22 }} />
                     </Link>
                 </Badge>
