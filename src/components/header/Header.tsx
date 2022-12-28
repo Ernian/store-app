@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { Menu, Input } from 'antd'
+import type { MenuProps } from 'antd'
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks'
 import { setSearchText, clearSearchText } from '../../store/searchFilterSlice'
-import { Link } from 'react-router-dom'
-import { Menu, Badge, Input } from 'antd'
+import CartIcon from '../cartIcon/CartIcon'
 import {
     AppstoreOutlined,
     MenuOutlined,
@@ -11,16 +13,13 @@ import {
     SketchOutlined,
     ManOutlined,
     WomanOutlined,
-    ShoppingCartOutlined,
 } from '@ant-design/icons'
-import type { MenuProps } from 'antd'
 import './header.css'
 
 const Header: React.FC = () => {
     const [current, setCurrent] = useState('store')
     const navigate = useNavigate()
     const onClick: MenuProps['onClick'] = event => setCurrent(event.key)
-    const { totalCartProductsCount } = useAppSelector(state => state.cart)
     const { searchText } = useAppSelector(state => state.searchFilter)
     const dispatch = useAppDispatch()
     const { pathname } = useLocation()
@@ -85,13 +84,7 @@ const Header: React.FC = () => {
             key: 'search',
         },
         {
-            label: (
-                <Badge count={totalCartProductsCount} status='success' offset={[8, 40]}>
-                    <Link to="/cart" onClick={onClearSearchText}>
-                        <ShoppingCartOutlined style={{ fontSize: 22 }} />
-                    </Link>
-                </Badge>
-            ),
+            label: <CartIcon />,
             key: 'cart',
             style: { marginLeft: 'auto', marginRight: 12 }
         }
