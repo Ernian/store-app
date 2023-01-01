@@ -1,15 +1,11 @@
-import axios from 'axios'
-import { IProductProperties } from './../types';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import {
     IProductsInitialState,
     IProductsPayload,
     ProductsCategories
 } from '../types'
-import { baseUrl } from './../consts'
 
 const initialState: IProductsInitialState = {
-    singleProduct: null,
     products: [],
     downloadedCategories: [],
     selectedCategory: null,
@@ -22,15 +18,11 @@ export const fetchProducts = createAsyncThunk
     (
         'products/fetchProducts',
         async ({ url, category }) => {
-            const products = (await axios.get(url)).data
+            const response = await fetch(url)
+            const products = await response.json()
             return { products, category }
         }
     )
-
-export const fetchProductById = createAsyncThunk<IProductProperties, string>(
-    'products/fetchProductById',
-    async (id) => (await axios.get(`${baseUrl}/${id}`)).data
-)
 
 const productsSlice = createSlice({
     name: 'products',
@@ -64,19 +56,7 @@ const productsSlice = createSlice({
                     }
                 } else {
                     state.loading = 'idle'
-                    state.error = 'Empty products array'
-                }
-            })
-            .addCase(fetchProductById.pending, state => {
-                state.loading = 'loading'
-                state.error = null
-            })
-            .addCase(fetchProductById.fulfilled, (state, { payload: product }) => {
-                if (product.id) {
-                    state.singleProduct = product
-                    state.selectedCategory = product.category
-                    state.loading = 'idle'
-                    state.error = null
+                    state.error = 'Server error'
                 }
             })
     }

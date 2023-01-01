@@ -23,7 +23,6 @@ export interface IProductProperties {
 }
 
 export interface IProductsInitialState {
-    singleProduct: IProductProperties | null,
     products: IProductProperties[],
     downloadedCategories: ProductsCategories[],
     selectedCategory: ProductsCategories | null,

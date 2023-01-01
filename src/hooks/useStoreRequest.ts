@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from './hooks'
-import { fetchProducts, fetchProductById } from '../store/productSlice'
+import { fetchProducts } from '../store/productSlice'
 import { ProductsCategories, IProductProperties } from '../types'
 import { baseUrl } from './../consts'
 
@@ -38,15 +38,21 @@ function useStoreRequest() {
     }
 
     function getProducts(category: ProductsCategories) {
-        if (!downloadedCategories.includes(category)
-            && downloadedCategories.length < 4) {
-            const url = createUrl(category)
-            dispatch(fetchProducts({ url, category }))
+        try {
+            if (!downloadedCategories.includes(category)
+                && downloadedCategories.length < 4) {
+                const url = createUrl(category)
+                dispatch(fetchProducts({ url, category }))
+            }
+        } catch (error) {
+            console.error(error)
         }
     }
 
-    function getProductById(id: string) {
-        dispatch(fetchProductById(id))
+    async function getProductById(id: string) {
+        const response = await fetch(`${baseUrl}/${id}`)
+        const product = await response.json()
+        return product as IProductProperties
     }
 
     return { checkCategory, getProducts, getProductById }

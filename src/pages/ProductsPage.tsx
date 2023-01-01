@@ -64,14 +64,13 @@ const ProductsPage = () => {
             {!checkCategory(category)
                 && <h2>There is no such category</h2>
             }
-            {(
-
-                loading === 'idle'
+            {(loading === 'idle'
                 && visibleProducts.length > 0
                 && !error
             )
                 && productCards
             }
+            {(loading === 'idle' && error) && <h2 style={{ marginTop: 15 }}>{error}</h2>}
         </Row >
     )
 }

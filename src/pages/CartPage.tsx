@@ -52,10 +52,16 @@ const CartPage = () => {
             key: 'count',
             render: (count, product) => (
                 <>
-                    <DownCircleOutlined className='cart-icon' onClick={() => decCartProductCount(product)} />
+                    <DownCircleOutlined
+                        className='cart-icon'
+                        onClick={() => decCartProductCount(product)} />
                     {count}
-                    <UpCircleOutlined className='cart-icon' onClick={() => dispatch(incProductCount(product.key))} />
-                    <DeleteOutlined className='cart-icon' onClick={() => dispatch(deleteProductFromCart(product.key))} />
+                    <UpCircleOutlined
+                        className='cart-icon'
+                        onClick={() => dispatch(incProductCount(product.key))} />
+                    <DeleteOutlined
+                        className='cart-icon'
+                        onClick={() => dispatch(deleteProductFromCart(product.key))} />
                 </>
             )
         },
