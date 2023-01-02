@@ -1,10 +1,18 @@
 import React from 'react'
-import { Col, Skeleton } from 'antd';
+import { Col, Row, Skeleton } from 'antd';
 import { sizes } from '../../consts';
 
 const CardsSkeleton: React.FC = () => {
     return (
-        <>
+        <Row
+            style={{ marginTop: 20 }}
+            gutter={
+                [
+                    { md: 16, lg: 16, xl: 16, xxl: 24 },
+                    { xs: 24, sm: 24, md: 16, lg: 16, xl: 16, xxl: 24 }
+                ]}
+            justify='center'
+        >
             <Col
                 xs={sizes.xs}
                 sm={sizes.sm}
@@ -149,7 +157,7 @@ const CardsSkeleton: React.FC = () => {
                     <Skeleton.Input active={true} />
                 </div>
             </Col>
-        </>
+        </Row>
     )
 }
 
